@@ -147,6 +147,115 @@ body {
   color: white;
 }
 
+/* --- HOME PAGE STYLES --- */
+.container {
+  max-width: 1100px;
+  margin: 100px auto 50px;
+  padding: 0 20px;
+}
+
+.container h2 {
+  color: #678D58;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Stilizacija oglasa kao kartica */
+.ad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.ad-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.ad-card:hover {
+  transform: translateY(-5px);
+}
+
+.ad-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.ad-card-content {
+  padding: 15px;
+}
+
+.ad-card-content h3 {
+  margin: 0 0 8px;
+  color: #333;
+  font-size: 18px;
+}
+
+.ad-card-content p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.ad-card-content .price {
+  font-weight: bold;
+  color: #678D58;
+}
+
+.ad-card-content .date {
+  font-size: 12px;
+  color: #999;
+}
+
+.ad-card-content .actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.ad-card-content button {
+  padding: 6px 10px;
+  background-color: #A7C4A0;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.ad-card-content button:hover {
+  background-color: #678D58;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #C2EABA;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pagination button:hover {
+  background-color: #8F8389;
+  color: white;
+}
+
 
 @keyframes App-logo-spin {
   from {

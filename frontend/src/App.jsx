@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import './App.css';
 import { useEffect, useState } from "react";
 import AddAd from "./components/AddAd";
+import EditAd from "./components/EditAd";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +42,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           <Route path="/add-ad" element={<AddAd />} />
+          <Route path="/edit/:id" element={<EditAd />} />
+
         </Routes>
       </div>
     </BrowserRouter>
