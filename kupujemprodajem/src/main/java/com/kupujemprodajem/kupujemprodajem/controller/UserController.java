@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest){
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest){
         String ip = httpRequest.getRemoteAddr();
 
         if(!userService.canAttemptLogin(ip)) {
@@ -51,7 +52,16 @@ public class UserController {
         }
 
         userService.resetAttempts(ip);
-        return  ResponseEntity.ok("Successful login.");
+        //return  ResponseEntity.ok("Successful login.");
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "email", user.getEmail(),
+                "address", user.getAddress(),
+                "latitude", user.getLatitude(),
+                "longitude", user.getLongitude(),
+                "phoneNumber",user.getPhoneNumber(),
+                "registrationDate", user.getRegistrationDate()
+        ));
     }
 
     @GetMapping("/email/{email}")
