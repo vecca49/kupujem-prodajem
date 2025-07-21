@@ -23,6 +23,7 @@ export default function Login({ onLogin }) {
         const user = await response.json();
 
         localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('auth', btoa(formData.username + ":" + formData.password)); 
 
         alert('Login successful!');
         onLogin(user);

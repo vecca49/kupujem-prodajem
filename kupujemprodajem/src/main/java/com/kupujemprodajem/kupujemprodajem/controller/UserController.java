@@ -54,6 +54,7 @@ public class UserController {
         userService.resetAttempts(ip);
         //return  ResponseEntity.ok("Successful login.");
         return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
                 "username", user.getUsername(),
                 "email", user.getEmail(),
                 "address", user.getAddress(),

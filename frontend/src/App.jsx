@@ -6,13 +6,14 @@ import Register from "./components/register/Register";
 import Home from "./components/Home";
 import './App.css';
 import { useEffect, useState } from "react";
+import AddAd from "./components/AddAd";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
   const handleLogin = (user) => {
-    setUsername(user.username); // Pretpostavljamo da user objekat sadrži `username`
+    setUsername(user.username); 
     setIsLoggedIn(true);
   };
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/add-ad" element={<AddAd />} />
         </Routes>
       </div>
     </BrowserRouter>
