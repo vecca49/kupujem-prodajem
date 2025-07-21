@@ -15,7 +15,8 @@ export default function Navbar({ onLogout }) {
           <>
             <span>Welcome, {user.username}</span>
             <button onClick={onLogout}>Sign Out</button>
-            <button onClick={() => alert('Add new listing')}>Add New Listing</button>
+            <button onClick={() => window.location.href = '/add-ad'}>Add New Listing</button>
+
           </>
         ) : (
           <>

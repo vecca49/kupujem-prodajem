@@ -1,98 +1,108 @@
-import React, { useState } from "react";
-import axios from "axios";
-
-const categories = [
-  "CLOTHING", "TOOLS", "SPORTS", "ACCESSORIES",
-  "FURNITURE", "PETS", "GAMES", "BOOKS", "TECHNOLOGY"
-];
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddAd() {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    city: "",
-    category: categories[0],
-    photo: null
+    title: '',
+    description: '',
+    price: '',
+    city: '',
+    category: 'TECHNOLOGY',
+    photo: null,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({...formData, [name]: value});
   };
 
   const handleFileChange = (e) => {
-    setFormData((prev) => ({ ...prev, photo: e.target.files[0] }));
+    setFormData({...formData, photo: e.target.files[0]});
   };
 
   const handleSubmit = async (e) => {
+    console.log("Price:", formData.price);
+    console.log("User ID:", user.id);
+    console.log(JSON.parse(localStorage.getItem("user")));
+
+
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"));
+
     if (!user) {
-      alert("You must be logged in.");
+      alert("You must be logged in to add an ad.");
       return;
     }
-
-    
 
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
-    data.append("price", parseFloat(formData.price));
+    data.append("price", formData.price);
     data.append("city", formData.city);
     data.append("category", formData.category);
     data.append("photo", formData.photo);
     data.append("userId", user.id);
 
-    if (!formData.photo) {
-        alert("You must select a photo.");
-        return;
-    }
-
-
     try {
-      const response = await axios.post("http://localhost:8080/api/ads", data, {
+        const auth = localStorage.getItem("auth");
+        const response = await fetch("http://localhost:8080/api/ads", {
+        method: "POST",
         headers: {
-            "Content-Type": "multipart/form-data"
+            "Authorization": "Basic " + auth
         },
-        withCredentials: true  
-    });
-      alert(`Ad created successfully with ID: ${response.data.id}`);
-      window.location.href = "/home";
-    } catch (err) {
-      console.error(err);
-      alert("Error while creating ad.");
+        body: data,
+      });
+
+      if (response.ok) {
+        alert("Ad successfully created!");
+        navigate("/home");
+      } else {
+        const text = await response.text();
+        alert("Error: " + text);
+        console.error("Error details:", text);
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
     }
   };
 
   return (
-    <div className="add-ad-container">
-        <h2>Add New Listing</h2>
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <label>Title:</label>
+    <div className="form-container">
+      <h2>Add New Ad</h2>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+
+        <label>Title</label>
         <input type="text" name="title" value={formData.title} onChange={handleChange} required />
 
-        <label>Description:</label>
+        <label>Description</label>
         <textarea name="description" value={formData.description} onChange={handleChange} required />
 
-        <label>Price:</label>
+        <label>Price</label>
         <input type="number" name="price" value={formData.price} onChange={handleChange} required />
 
-        <label>City:</label>
+        <label>City</label>
         <input type="text" name="city" value={formData.city} onChange={handleChange} required />
 
-        <label>Category:</label>
+        <label>Category</label>
         <select name="category" value={formData.category} onChange={handleChange}>
-            {categories.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-            ))}
+          <option value="CLOTHING">Clothing</option>
+          <option value="TOOLS">Tools</option>
+          <option value="SPORTS">Sports</option>
+          <option value="ACCESSORIES">Accessories</option>
+          <option value="FURNITURE">Furniture</option>
+          <option value="PETS">Pets</option>
+          <option value="GAMES">Games</option>
+          <option value="BOOKS">Books</option>
+          <option value="TECHNOLOGY">Technology</option>
         </select>
 
-        <label>Photo:</label>
-        <input type="file" name="photo" accept="image/*" onChange={handleFileChange} required />
+        <label>Photo</label>
+        <input type="file" name="photo" onChange={handleFileChange} accept="image/*" required />
 
-        <button type="submit">Submit</button>
-        </form>
+        <button type="submit">Submit Ad</button>
+      </form>
     </div>
-    );
+  );
 }
