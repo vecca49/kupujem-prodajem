@@ -12,7 +12,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: 70px;
   background-color: #A7C4A0; /* tamnija zelena */
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@ body {
 }
 
 .navbar .logo img {
-  height: 40px;
+  height: 60px;
   width: auto;
 }
 
@@ -36,17 +36,20 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
-  color: #8F8389; /* neutralna tamnija */
+  color: #8F8389; 
+  font-size: 20px;
+
 }
 
 .navbar .nav-right button {
-  background-color: #C2EABA; /* svetlija zelena */
+  background-color: #C2EABA; 
   border: none;
   padding: 6px 14px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
   color: #4B4B4B;
+  font-size: 20px;
   transition: background-color 0.3s ease;
 }
 
@@ -145,6 +148,242 @@ body {
 .success-box button:hover {
   background-color: #678D58;
   color: white;
+}
+
+/* --- HOME PAGE STYLES --- */
+.container {
+  max-width: 1100px;
+  margin: 100px auto 50px;
+  padding: 0 20px;
+}
+
+.container h2 {
+  color: #678D58;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Stilizacija oglasa kao kartica */
+.ad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.ad-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.ad-card:hover {
+  transform: translateY(-5px);
+}
+
+.ad-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.ad-card-content {
+  padding: 15px;
+}
+
+.ad-card-content h3 {
+  margin: 0 0 8px;
+  color: #333;
+  font-size: 18px;
+}
+
+.ad-card-content p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.ad-card-content .price {
+  font-weight: bold;
+  color: #678D58;
+}
+
+.ad-card-content .date {
+  font-size: 12px;
+  color: #999;
+}
+
+.ad-card-content .actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.ad-card-content button {
+  padding: 6px 10px;
+  background-color: #A7C4A0;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.ad-card-content button:hover {
+  background-color: #678D58;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #C2EABA;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pagination button:hover {
+  background-color: #8F8389;
+  color: white;
+}
+
+/* --- AD DETAILS STYLES --- */
+.ad-details {
+  max-width: 800px;
+  margin: 100px auto 50px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-size: 16px;
+  color: #333;
+}
+
+.ad-details h2 {
+  color: #678D58;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ad-details .detail-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.ad-details p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.ad-details strong {
+  color: #4B4B4B;
+}
+
+.ad-details h3 {
+  margin-top: 25px;
+  color: #678D58;
+  border-top: 1px solid #C2EABA;
+  padding-top: 15px;
+}
+
+.ad-details .actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.ad-details .actions button {
+  padding: 10px 18px;
+  background-color: #A7C4A0;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.ad-details .actions button:hover {
+  background-color: #678D58;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 100px auto 50px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-size: 16px;
+  color: #333;
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #678D58;
+  margin-bottom: 25px;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #A7C4A0;
+  color: white;
+}
+
+.form-actions .cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.form-actions .cancel-button:hover {
+  background-color: #999;
 }
 
 

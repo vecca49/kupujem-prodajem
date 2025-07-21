@@ -3,12 +3,20 @@ package com.kupujemprodajem.kupujemprodajem.controller;
 import com.kupujemprodajem.kupujemprodajem.model.Ad;
 import com.kupujemprodajem.kupujemprodajem.model.Category;
 import com.kupujemprodajem.kupujemprodajem.service.AdService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.List;
 
@@ -87,4 +95,44 @@ public class AdController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<Ad>> getAllAdsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(adService.getAllAdsPaged(page, size));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Ad>> getAdsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(adService.getAdsByUserId(userId));
+    }
+
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<Resource> getAdPhoto(@PathVariable Long id) {
+        try {
+            Path photoPath = adService.getPhotoPathByAdId(id);
+            if (photoPath == null || !Files.exists(photoPath)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Resource resource = new UrlResource(photoPath.toUri());
+
+            String contentType = Files.probeContentType(photoPath);
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }

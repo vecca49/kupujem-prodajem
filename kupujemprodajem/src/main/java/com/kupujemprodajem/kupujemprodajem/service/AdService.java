@@ -5,6 +5,10 @@ import com.kupujemprodajem.kupujemprodajem.repository.AdRepository;
 import com.kupujemprodajem.kupujemprodajem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -75,6 +79,29 @@ public class AdService {
 
     public  Optional<Ad> getById(Long id) {
         return adRepository.findById(id);
+    }
+
+    public Page<Ad> getAllAdsPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return adRepository.findAll(pageable);
+    }
+
+    public List<Ad> getAdsByUserId(Long userId) {
+        return adRepository.findByUserId(userId);
+    }
+
+
+    public Path getPhotoPathByAdId(Long adId) {
+        Optional<Ad> adOpt = adRepository.findById(adId);
+        if (adOpt.isPresent()) {
+            Ad ad = adOpt.get();
+            String photoUrl = ad.getPhoto_url();
+            if (photoUrl != null && !photoUrl.isEmpty()) {
+                String filename = Paths.get(photoUrl).getFileName().toString();
+                return uploadDir.resolve(filename);
+            }
+        }
+        return null;
     }
 
 }
