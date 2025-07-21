@@ -45,11 +45,27 @@ public class AdController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ad> updateAd(@PathVariable Long id, @Valid @RequestBody Ad updatedAd) {
+    public ResponseEntity<Ad> updateAd(
+            @PathVariable Long id,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+            @RequestParam("city") String city,
+            @RequestParam("category") String category,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) {
         try {
-            return ResponseEntity.ok(adService.updateAd(id, updatedAd));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            Ad updatedAd = new Ad();
+            updatedAd.setTitle(title);
+            updatedAd.setDescription(description);
+            updatedAd.setPrice(price);
+            updatedAd.setCity(city);
+            updatedAd.setCategory(Enum.valueOf(Category.class, category));
+
+            Ad ad = adService.updateAd(id, updatedAd, photo);
+            return ResponseEntity.ok(ad);
+        } catch (IllegalArgumentException | IOException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 

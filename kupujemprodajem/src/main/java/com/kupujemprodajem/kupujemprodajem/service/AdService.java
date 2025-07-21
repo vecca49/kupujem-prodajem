@@ -41,16 +41,29 @@ public class AdService {
         return  adRepository.save(ad);
     }
 
-    public Ad updateAd(Long adId, Ad updatedAd) {
-        return  adRepository.findById(adId).map(existingAd -> {
+    public Ad updateAd(Long adId, Ad updatedAd, MultipartFile photo) throws IOException {
+        return adRepository.findById(adId).map(existingAd -> {
             existingAd.setTitle(updatedAd.getTitle());
             existingAd.setDescription(updatedAd.getDescription());
             existingAd.setPrice(updatedAd.getPrice());
             existingAd.setCity(updatedAd.getCity());
             existingAd.setCategory(updatedAd.getCategory());
+
+            if (photo != null && !photo.isEmpty()) {
+                String filename = UUID.randomUUID() + "_" + photo.getOriginalFilename();
+                Path photoPath = uploadDir.resolve(filename);
+                try {
+                    Files.write(photoPath, photo.getBytes());
+                    existingAd.setPhoto_url("/uploads/" + filename);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to save photo", e);
+                }
+            }
+
             return adRepository.save(existingAd);
         }).orElseThrow(() -> new IllegalArgumentException("Ad not found"));
     }
+
 
     public  void deleteAd(Long adId) {
         adRepository.deleteById(adId);
