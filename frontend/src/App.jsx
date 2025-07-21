@@ -8,6 +8,7 @@ import './App.css';
 import { useEffect, useState } from "react";
 import AddAd from "./components/AddAd";
 import EditAd from "./components/EditAd";
+import AdDetails from "./components/AdDetails";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -43,7 +44,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/add-ad" element={<AddAd />} />
           <Route path="/edit/:id" element={<EditAd />} />
-
+          <Route path="/ads/:id" element={<AdDetails />} />
         </Routes>
       </div>
     </BrowserRouter>

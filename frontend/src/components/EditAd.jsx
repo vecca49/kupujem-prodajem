@@ -116,7 +116,11 @@ const EditAd = () => {
         <label>New Photo (optional)</label>
         <input type="file" name="photo" onChange={handleFileChange} />
 
-        <button type="submit">Save Changes</button>
+        <div className="form-actions">
+          <button type="submit">Save Changes</button>
+          <button type="button" onClick={() => navigate('/home')} className="cancel-button">Cancel</button>
+        </div>
+
       </form>
     </div>
   );

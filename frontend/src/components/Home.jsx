@@ -90,7 +90,7 @@ const Home = () => {
 
   return (
     <div className="container">
-      <h2>Svi Oglasi</h2>
+      <h2>All Ads</h2>
       <div className="ad-grid">
         {ads.map((ad) => (
           <div className="ad-card" key={ad.id}>
@@ -100,7 +100,10 @@ const Home = () => {
               className="ad-image"
             />
             <div className="ad-card-content">
-              <h3>{ad.title}</h3>
+              <h3 style={{ cursor: 'pointer', color: 'blue' }} onClick={() => window.location.href = `/ads/${ad.id}`}>
+                {ad.title}
+              </h3>
+
               <p>{ad.description}</p>
               <p><strong>City:</strong> {ad.city}</p>
               <p><strong>Category:</strong> {ad.category}</p>
