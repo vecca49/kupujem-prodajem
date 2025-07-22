@@ -36,13 +36,17 @@ public class AdController {
             @RequestParam("city") String city,
             @RequestParam("category") String category,
             @RequestParam("userId") Long userId,
-            @RequestParam("photo") MultipartFile photo
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("longitude") Double longitude
     ) {
         Ad ad = new Ad();
         ad.setTitle(title);
         ad.setDescription(description);
         ad.setPrice(price);
         ad.setCity(city);
+        ad.setLatitude(latitude);
+        ad.setLongitude(longitude);
         ad.setCategory(Enum.valueOf(Category.class, category));
 
         try {
@@ -134,5 +138,21 @@ public class AdController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+
+    @GetMapping("/filter-by-category")
+    public ResponseEntity<Page<Ad>> getAdsByCategory(
+            @RequestParam("category") String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        try {
+            Category enumCategory = Category.valueOf(category.toUpperCase());
+            return ResponseEntity.ok(adService.getAdsByCategory(enumCategory, page, size));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build(); // invalid category
+        }
+    }
+
 
 }
