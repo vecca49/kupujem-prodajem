@@ -36,13 +36,17 @@ public class AdController {
             @RequestParam("city") String city,
             @RequestParam("category") String category,
             @RequestParam("userId") Long userId,
-            @RequestParam("photo") MultipartFile photo
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("longitude") Double longitude
     ) {
         Ad ad = new Ad();
         ad.setTitle(title);
         ad.setDescription(description);
         ad.setPrice(price);
         ad.setCity(city);
+        ad.setLatitude(latitude);
+        ad.setLongitude(longitude);
         ad.setCategory(Enum.valueOf(Category.class, category));
 
         try {

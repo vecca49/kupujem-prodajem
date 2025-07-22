@@ -46,8 +46,13 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.registrationDate = LocalDateTime.now();
-        this.latitude = 0.0;
-        this.longitude = 0.0;
+        if (this.latitude == null) {
+            this.latitude = 0.0;
+        }
+        if (this.longitude == null) {
+            this.longitude = 0.0;
+        }
+
     }
 
     public Long getId() {
