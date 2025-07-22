@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import AddAd from "./components/AddAd";
 import EditAd from "./components/EditAd";
 import AdDetails from "./components/AdDetails";
+import 'leaflet/dist/leaflet.css';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LocationPicker from './LocationPicker';
 
 export default function AddAd() {
   const navigate = useNavigate();
@@ -12,12 +13,24 @@ export default function AddAd() {
     city: '',
     category: 'TECHNOLOGY',
     photo: null,
+    latitude: 0.0,
+    longitude: 0.0,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({...formData, [name]: value});
   };
+
+  const handleLocationSelect = (location) => {
+    setFormData({
+      ...formData,
+      city: location.city,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    });
+  };
+
 
   const handleFileChange = (e) => {
     setFormData({...formData, photo: e.target.files[0]});
@@ -44,6 +57,9 @@ export default function AddAd() {
     data.append("category", formData.category);
     data.append("photo", formData.photo);
     data.append("userId", user.id);
+    data.append("latitude", formData.latitude);
+    data.append("longitude", formData.longitude);
+
 
     try {
         const auth = localStorage.getItem("auth");
@@ -84,6 +100,8 @@ export default function AddAd() {
 
         <label>City</label>
         <input type="text" name="city" value={formData.city} onChange={handleChange} required />
+
+        <LocationPicker onSelect={handleLocationSelect} />
 
         <label>Category</label>
         <select name="category" value={formData.category} onChange={handleChange}>

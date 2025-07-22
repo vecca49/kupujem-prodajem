@@ -386,6 +386,13 @@ body {
   background-color: #999;
 }
 
+.leaflet-container {
+  height: 300px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+
 
 @keyframes App-logo-spin {
   from {
