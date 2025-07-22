@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LocationPicker from './LocationPicker';
 
 const EditAd = () => {
   const { id } = useParams();
@@ -12,8 +13,20 @@ const EditAd = () => {
     price: '',
     city: '',
     category: '',
-    photo: null
+    photo: null,
+    latitude: 0.0,
+    longitude: 0.0,
   });
+
+  const handleLocationSelect = (location) => {
+    setForm(prev => ({
+      ...prev,
+      city: location.city,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+  };
+
 
   useEffect(() => {
     const fetchAd = async () => {
@@ -34,7 +47,9 @@ const EditAd = () => {
           price: response.data.price,
           city: response.data.city,
           category: response.data.category,
-          photo: null
+          photo: null,
+          latitude: response.data.latitude,
+          longitude: response.data.longitude
         });
       } catch (error) {
         console.error('Failed to load ad data', error);
@@ -97,6 +112,8 @@ const EditAd = () => {
 
         <label>City</label>
         <input name="city" value={form.city} onChange={handleChange} required />
+
+        <LocationPicker onSelect={handleLocationSelect} />
 
         <label>Category</label>
         <select name="category" value={form.category} onChange={handleChange} required>

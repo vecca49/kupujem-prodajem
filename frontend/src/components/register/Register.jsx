@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LocationPicker from '../LocationPicker';
 
 
 export default function Registration() {
@@ -9,12 +10,24 @@ export default function Registration() {
     confirmPassword: '',
     address: '',
     phoneNumber: '',
+    latitude: 0.0,
+    longitude: 0.0,
   });
   const [registered, setRegistered] = useState(false);
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value });
   };
+
+  const handleLocationSelect = (location) => {
+    setFormData({
+      ...formData,
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    });
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,6 +119,9 @@ export default function Registration() {
           onChange={handleChange} 
           required 
         />
+
+        <LocationPicker onSelect={handleLocationSelect} />
+
 
         <label htmlFor="phoneNumber">Phone Number</label>
         <input 
