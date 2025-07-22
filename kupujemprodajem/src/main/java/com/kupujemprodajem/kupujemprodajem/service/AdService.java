@@ -1,5 +1,6 @@
 package com.kupujemprodajem.kupujemprodajem.service;
 import com.kupujemprodajem.kupujemprodajem.model.Ad;
+import com.kupujemprodajem.kupujemprodajem.model.Category;
 import com.kupujemprodajem.kupujemprodajem.model.User;
 import com.kupujemprodajem.kupujemprodajem.repository.AdRepository;
 import com.kupujemprodajem.kupujemprodajem.repository.UserRepository;
@@ -103,5 +104,13 @@ public class AdService {
         }
         return null;
     }
+
+    public Page<Ad> getAdsByCategory(Category category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return adRepository.findByCategory(category, pageable);
+    }
+
+
+
 
 }

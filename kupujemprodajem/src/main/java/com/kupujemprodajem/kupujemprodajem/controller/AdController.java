@@ -139,4 +139,20 @@ public class AdController {
         }
     }
 
+
+    @GetMapping("/filter-by-category")
+    public ResponseEntity<Page<Ad>> getAdsByCategory(
+            @RequestParam("category") String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        try {
+            Category enumCategory = Category.valueOf(category.toUpperCase());
+            return ResponseEntity.ok(adService.getAdsByCategory(enumCategory, page, size));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build(); // invalid category
+        }
+    }
+
+
 }
