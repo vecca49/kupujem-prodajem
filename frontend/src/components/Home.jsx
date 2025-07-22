@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
   const [ads, setAds] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
+
 
   const user = JSON.parse(localStorage.getItem('user'));
   console.log('Logged in user:', user)
@@ -13,6 +20,17 @@ const Home = () => {
   useEffect(() => {
     fetchAds(currentPage);
   }, [currentPage]);
+
+  const userIcon = new L.Icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+    iconSize: [32, 32],
+  });
+
+  const adIcon = new L.Icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854878.png',
+    iconSize: [28, 28],
+  });
+
 
   const fetchAds = async (page) => {
     try {
@@ -91,6 +109,42 @@ const Home = () => {
   return (
     <div className="container">
       <h2>All Ads</h2>
+
+      <h2>Map</h2>
+      <MapContainer
+        center={[user?.latitude || 44.7866, user?.longitude || 20.4489]} // Beograd fallback
+        zoom={10}
+        style={{ height: "500px", width: "100%", marginBottom: "30px" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
+        />
+
+        {user?.latitude && user?.longitude && (
+          <Marker position={[user.latitude, user.longitude]} icon={userIcon}>
+            <Popup>Your location</Popup>
+          </Marker>
+        )}
+
+        {ads.map((ad) => (
+          ad.latitude && ad.longitude && (
+            <Marker key={ad.id} position={[ad.latitude, ad.longitude]} icon={adIcon}>
+              <Popup>
+                <div
+                  onClick={() => navigate(`/ads/${ad.id}`)}
+                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  {ad.title}<br />
+                  {ad.city}<br />
+                  <span style={{ color: 'blue' }}>Click for more</span>
+                </div>
+              </Popup>
+            </Marker>
+          )
+        ))}
+      </MapContainer>
+
       <div className="ad-grid">
         {ads.map((ad) => (
           <div className="ad-card" key={ad.id}>
